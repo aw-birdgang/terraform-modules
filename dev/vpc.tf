@@ -1,4 +1,4 @@
-module "dev-vpc" {
+module "vpc" {
   source = "../modules/vpc"
   name = "${var.environment}-${var.project_name}-vpc"
   environment = var.environment

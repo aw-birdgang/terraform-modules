@@ -21,7 +21,7 @@ resource "aws_lb_listener" "front_end" {
 
   default_action {
     #(Optional) ARN of the Target Group to which to route traffic. Specify only if type is forward and you want to route to a single target group. To route to one or more target groups, use a forward block instead.
-    target_group_arn = aws_lb_target_group.lb-target-group-blue.id
+    target_group_arn = aws_lb_target_group.lb_target_group_blue.id
     #(Required) Type of routing action. Valid values are forward, redirect, fixed-response, authenticate-cognito and authenticate-oidc.
     type = "forward"
   }
@@ -33,7 +33,7 @@ resource "aws_lb_listener" "front_end" {
 }
 
 #Provides a Target Group resource for use with Load Balancer resources.
-resource "aws_lb_target_group" "lb-target-group-blue" {
+resource "aws_lb_target_group" "lb_target_group_blue" {
   #(Optional, Forces new resource) Name of the target group. If omitted, Terraform will assign a random, unique name. This name must be unique per region per account, can have a maximum of 32 characters, must contain only alphanumeric characters or hyphens, and must not begin or end with a hyphen.
   name = "${var.name}-http-blue-tg"
   #(May be required, Forces new resource) Port on which targets receive traffic, unless overridden when registering a specific target. Required when target_type is instance, ip or alb. Does not apply when target_type is lambda.
@@ -61,7 +61,7 @@ resource "aws_lb_target_group" "lb-target-group-blue" {
   }
 }
 
-resource "aws_lb_target_group" "lb-target-group-green" {
+resource "aws_lb_target_group" "lb_target_group_green" {
   #(Optional, Forces new resource) Name of the target group. If omitted, Terraform will assign a random, unique name. This name must be unique per region per account, can have a maximum of 32 characters, must contain only alphanumeric characters or hyphens, and must not begin or end with a hyphen.
   name = "${var.name}-http-green-tg"
   #(May be required, Forces new resource) Port on which targets receive traffic, unless overridden when registering a specific target. Required when target_type is instance, ip or alb. Does not apply when target_type is lambda.

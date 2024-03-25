@@ -22,3 +22,14 @@ output "zone_id" {
   value = aws_alb.alb.zone_id
 }
 
+
+
+# The ARN of the Target Group
+output "target_group_arn" {
+  value = aws_alb_target_group.alb_target_group.arn
+}
+
+#  The ARN suffix of the Target Group for use with CloudWatch Metrics.
+output "target_group_arn_suffix" {
+  value = aws_alb_target_group.alb_target_group.arn_suffix
+}

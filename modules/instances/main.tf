@@ -1,3 +1,4 @@
+#
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -14,6 +15,7 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+#
 resource "aws_instance" "instance" {
   ami = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
@@ -38,6 +40,7 @@ EOF
   }
 }
 
+#
 resource "aws_key_pair" "example-key" {
   key_name   = "${var.key_pair_name}-${var.environment}"
   public_key = file("${path.root}/../key/${var.key_pair_name}-${var.environment}.pub")

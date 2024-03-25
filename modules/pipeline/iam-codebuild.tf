@@ -84,8 +84,10 @@ data "aws_iam_policy_document" "codebuild-policy-document" {
     effect  = "Allow"
     actions = ["s3:*"]
     resources = [
-      aws_s3_bucket.codebuild-cache.arn,
-      "${aws_s3_bucket.codebuild-cache.arn}/*",
+      var.codebuild_cache_arn,
+      "${var.codebuild_cache_arn}/*",
+#      aws_s3_bucket.codebuild-cache.arn,
+#      "${aws_s3_bucket.codebuild-cache.arn}/*",
     ]
   }
   #
@@ -97,8 +99,10 @@ data "aws_iam_policy_document" "codebuild-policy-document" {
       "s3:Get*"
     ]
     resources = [
-      aws_s3_bucket.s3-artifacts.arn,
-      "${aws_s3_bucket.s3-artifacts.arn}/*"
+#      aws_s3_bucket.s3-artifacts.arn,
+#      "${aws_s3_bucket.s3-artifacts.arn}/*"
+      var.s3_artifacts_arn,
+      "${var.s3_artifacts_arn}/*"
     ]
   }
 
@@ -154,7 +158,7 @@ data "aws_iam_policy_document" "codebuild-policy-document" {
       "kms:Decrypt"
     ]
     resources = [
-      aws_kms_key.kms-key-artifacts.arn
+      aws_kms_key.kms_key_artifacts.arn
     ]
   }
 }

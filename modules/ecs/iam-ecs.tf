@@ -15,7 +15,8 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-resource "aws_iam_role" "ecs-task-execution-role" {
+
+resource "aws_iam_role" "ecs_task_execution_role" {
   #(Optional, Forces new resource) Friendly name of the role. If omitted, Terraform will assign a random, unique name. See IAM Identifiers for more information.
   name = "${var.environment}-ecs-task-execution-role"
   #(Required) Policy that grants an entity permission to assume the role.
@@ -23,9 +24,9 @@ resource "aws_iam_role" "ecs-task-execution-role" {
 }
 
 
-resource "aws_iam_role_policy" "ecs-task-execution-role" {
-  name = "ecs-task-execution-role"
-  role = aws_iam_role.ecs-task-execution-role.id
+resource "aws_iam_role_policy" "ecs_task_execution_role_policy" {
+  name = "${var.environment}-ecs-task-execution-role"
+  role = aws_iam_role.ecs_task_execution_role.id
 
   policy = <<EOF
 {
@@ -52,7 +53,7 @@ EOF
 }
 
 
-resource "aws_iam_role" "ecs-task-role" {
+resource "aws_iam_role" "ecs_task_role" {
   #(Optional, Forces new resource) Friendly name of the role. If omitted, Terraform will assign a random, unique name. See IAM Identifiers for more information.
   name = "${var.environment}-ecs-task-role"
   #(Required) Policy that grants an entity permission to assume the role.

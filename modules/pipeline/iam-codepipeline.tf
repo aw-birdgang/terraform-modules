@@ -43,8 +43,10 @@ data "aws_iam_policy_document" "demo-codepipeline-role-policy" {
       "s3:*",
     ]
     resources = [
-      aws_s3_bucket.s3-artifacts.arn,
-      "${aws_s3_bucket.s3-artifacts.arn}/*",
+#      aws_s3_bucket.s3-artifacts.arn,
+#      "${aws_s3_bucket.s3-artifacts.arn}/*",
+      var.s3_artifacts_arn,
+      "${var.s3_artifacts_arn}/*",
     ]
   }
   statement {
@@ -76,7 +78,7 @@ data "aws_iam_policy_document" "demo-codepipeline-role-policy" {
       "kms:Decrypt",
     ]
     resources = [
-      aws_kms_key.kms-key-artifacts.arn,
+      aws_kms_key.kms_key_artifacts.arn,
     ]
   }
 #  statement {
@@ -140,8 +142,10 @@ data "aws_iam_policy_document" "demo-codepipeline-role-policy" {
       "iam:PassRole"
     ]
     resources = [
-      aws_iam_role.ecs-task-execution-role.arn,
-      aws_iam_role.ecs-task-role.arn,
+      #      aws_iam_role.ecs-task-execution-role.arn,
+      #      aws_iam_role.ecs-task-role.arn,
+      var.ecs_task_execution_role_arn,
+      var.ecs_task_role_arn,
     ]
     condition {
       test     = "StringLike"

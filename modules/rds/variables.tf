@@ -1,5 +1,11 @@
+############################## BASE ####################
+
 variable "environment" {
   description = "environment"
+}
+
+variable "name" {
+  description = "name"
 }
 
 variable "aws_region" {

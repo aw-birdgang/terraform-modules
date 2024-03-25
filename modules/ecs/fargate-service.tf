@@ -3,9 +3,9 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
   #(Required) A unique name for your task definition.
   family = var.aws_ecs_task_definition_name
   #(Optional) ARN of the task execution role that the Amazon ECS container agent and the Docker daemon can assume.
-  execution_role_arn = aws_iam_role.ecs-task-execution-role.arn
+  execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
   #(Optional) ARN of IAM role that allows your Amazon ECS container task to make calls to other AWS services.
-  task_role_arn = aws_iam_role.ecs-task-role.arn
+  task_role_arn = aws_iam_role.ecs_task_role.arn
   #(Optional) Number of cpu units used by the task. If the requires_compatibilities is FARGATE this field is required.
   cpu = 256
   #(Optional) Amount (in MiB) of memory used by the task. If the requires_compatibilities is FARGATE this field is required.
@@ -21,7 +21,7 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
 [
   {
     "essential": true,
-    "image": "${aws_ecr_repository.ecr-repository.repository_url}",
+    "image": "${var.repository_url}",
     "name": "${var.aws_ecs_task_definition_name}",
     "logConfiguration": {
             "logDriver": "awslogs",
@@ -64,7 +64,7 @@ resource "aws_ecs_service" "ecs_service" {
   task_definition = aws_ecs_task_definition.ecs_task_definition.arn
   #(Optional) Launch type on which to run your service. The valid values are EC2, FARGATE, and EXTERNAL. Defaults to EC2.
   launch_type = "FARGATE"
-  depends_on = [aws_lb_listener.front_end]
+  depends_on = [var.lb_listener_front_end]
 
   #(Optional) Configuration block for deployment controller configuration.
   deployment_controller {
@@ -76,7 +76,7 @@ resource "aws_ecs_service" "ecs_service" {
     #(Required) Subnets associated with the task or service.
     subnets = slice(var.public_subnets, 1, 2)
     #(Optional) Security groups associated with the task or service. If you do not specify a security group, the default security group for the VPC is used.
-    security_groups  = [aws_security_group.ecs-security-group.id]
+    security_groups  = [aws_security_group.ecs_security_group.id]
     #(Optional) Assign a public IP address to the ENI (Fargate launch type only). Valid values are true or false. Default false.
     assign_public_ip = true
   }
@@ -84,7 +84,7 @@ resource "aws_ecs_service" "ecs_service" {
   #(Optional) Configuration block for load balancers.
   load_balancer {
     #(Required for ALB/NLB) ARN of the Load Balancer target group to associate with the service.
-    target_group_arn = aws_lb_target_group.lb-target-group-blue.id
+    target_group_arn = var.lb_target_group_blue_id
     #(Required) Name of the container to associate with the load balancer (as it appears in a container definition).
     container_name = var.aws_ecs_task_definition_name
     #(Required) Port on the container to associate with the load balancer.
@@ -100,7 +100,7 @@ resource "aws_ecs_service" "ecs_service" {
 }
 
 #Terraform currently provides a Security Group resource with ingress and egress rules defined in-line and a Security Group Rule resource which manages one or more ingress or egress rules.
-resource "aws_security_group" "ecs-security-group" {
+resource "aws_security_group" "ecs_security_group" {
   #(Optional, Forces new resource) Name of the security group. If omitted, Terraform will assign a random, unique name.
   name = "${var.environment} ecs security group"
   #(Optional, Forces new resource) VPC ID. Defaults to the region's default VPC.
@@ -136,7 +136,7 @@ resource "aws_security_group" "ecs-security-group" {
 }
 
 #Provides a CloudWatch Log Group resource.
-resource "aws_cloudwatch_log_group" "cloudwatch-log" {
+resource "aws_cloudwatch_log_group" "cloudwatch_log" {
   #(Optional, Forces new resource) The name of the log group. If omitted, Terraform will assign a random, unique name.
   name = "log-${var.name}"
 }

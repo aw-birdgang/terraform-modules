@@ -48,9 +48,11 @@ resource "aws_codedeploy_deployment_group" "codedeploy_deployment_group" {
   #(Optional) Configuration block(s) of the ECS services for a deployment group
   ecs_service {
     #(Required) The name of the ECS cluster.
-    cluster_name = aws_ecs_cluster.ecs_cluster.name
+#    cluster_name = aws_ecs_cluster.ecs_cluster.name
+    cluster_name = var.ecs_cluster_name
     #(Required) The name of the ECS service.
-    service_name = aws_ecs_service.ecs_service.name
+#    service_name = aws_ecs_service.ecs_service.name
+    service_name = var.ecs_service_name
   }
 
   #(Optional) Single configuration block of the load balancer to use in a blue/green deployment (documented below).
@@ -59,14 +61,17 @@ resource "aws_codedeploy_deployment_group" "codedeploy_deployment_group" {
     target_group_pair_info {
       #(Required) Configuration block for the production traffic route
       prod_traffic_route {
-        listener_arns = [aws_lb_listener.front_end.arn]
+#        listener_arns = [aws_lb_listener.front_end.arn]
+        listener_arns = [var.front_end_arn]
       }
       #(Required) Configuration blocks for a target group within a target group pair
       target_group {
-        name = aws_lb_target_group.lb-target-group-blue.name
+#        name = aws_lb_target_group.lb-target-group-blue.name
+        name = var.target_group_blue_name
       }
       target_group {
-        name = aws_lb_target_group.lb-target-group-green.name
+#        name = aws_lb_target_group.lb-target-group-green.name
+        name = var.target_group_green_name
       }
     }
   }

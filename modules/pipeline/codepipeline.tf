@@ -13,14 +13,15 @@ resource "aws_codepipeline" "codepipeline" {
   #(Required) One or more artifact_store blocks. Artifact stores are documented below.
   artifact_store {
     #(Required) The location where AWS CodePipeline stores artifacts for a pipeline; currently only S3 is supported.
-    location = aws_s3_bucket.s3-artifacts.bucket
+#    location = aws_s3_bucket.s3-artifacts.bucket
+    location = var.s3_artifacts_bucket
     #(Required) The type of the artifact store, such as Amazon S3
     type = "S3"
 
     #(Optional) The encryption key block AWS CodePipeline uses to encrypt the data in the artifact store, such as an AWS Key Management Service (AWS KMS) key. If you don't specify a key, AWS CodePipeline uses the default key for Amazon Simple Storage Service (Amazon S3).
     encryption_key {
       #(Required) The KMS key ARN or ID
-      id   = aws_kms_alias.kms-alias-artifacts.arn
+      id   = aws_kms_alias.kms_alias_artifacts.arn
       #(Required) The type of key; currently only KMS is supported
       type = "KMS"
     }
@@ -68,7 +69,7 @@ resource "aws_codepipeline" "codepipeline" {
       version = "1"
 
       configuration = {
-        ProjectName = aws_codebuild_project.codebuild-project.name
+        ProjectName = aws_codebuild_project.codebuild_project.name
       }
     }
   }
